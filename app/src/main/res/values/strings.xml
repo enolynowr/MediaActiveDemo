@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">MediaActiveDemo</string>
+    <string name="button_connect">Connect</string>
+    <string name="button_disconnect">Disconnect</string>
+    <string name="banner_ads">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="full_ads">ca-app-pub-4180035077241491/7819265339</string>
+
+    <string name="actionbar_string">Home</string>
+</resources>
