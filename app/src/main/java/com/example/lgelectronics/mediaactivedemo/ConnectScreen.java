@@ -1,5 +1,6 @@
 package com.example.lgelectronics.mediaactivedemo;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -7,6 +8,7 @@ import android.media.MediaPlayer;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -33,15 +35,16 @@ public class ConnectScreen extends AppCompatActivity {
     ImageView iv_dial;
     MediaPlayer mediaPlayer;
     int mPosition;
-
+    TelephonyManager telephony;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_connect_screen);
+        telephony=(TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
         //Admob Initial and Load
         mInterstitialAd = new InterstitialAd(this);
         mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
-        mInterstitialAd.loadAd(new AdRequest.Builder().build());//load
+        mInterstitialAd.loadAd(new AdRequest.Builder().addTestDevice(telephony.getDeviceId()).build());//load
         // button
         connect = (Button) findViewById(R.id.btn_connect);
         disconnect = (Button) findViewById(R.id.btn_disconnect);
