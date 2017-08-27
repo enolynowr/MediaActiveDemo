@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.lgelectronics.mediaactivedemo.ConnectScreen">
+    tools:context="com.example.lgelectronics.mediaactivedemo.ConnectScreenActivity">
 
     <ImageView
         android:id="@+id/iv_dialling"
@@ -13,11 +13,12 @@
         android:layout_height="430dp"
         android:layout_margin="5dp" />
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/iv_dialling"
-        android:layout_margin="5dp">
+        android:layout_margin="5dp"
+        android:orientation="horizontal">
 
         <info.hoang8f.widget.FButton
             android:id="@+id/btn_connect"
@@ -33,7 +34,8 @@
             android:text="@string/button_connect"
             android:textColor="@android:color/white"
             fbutton:buttonColor="@color/colorPrimary"
-            fbutton:shadowEnabled="true" />
+            fbutton:shadowEnabled="true"
+            android:layout_weight="1"/>
 
         <info.hoang8f.widget.FButton
             android:id="@+id/btn_disconnect"
@@ -49,9 +51,10 @@
             android:text="@string/button_disconnect"
             android:textColor="@android:color/white"
             fbutton:buttonColor="@color/fbutton_default_shadow_color"
-            fbutton:shadowEnabled="true" />
+            fbutton:shadowEnabled="true"
+            android:layout_weight="1"/>
 
-    </RelativeLayout>
+    </LinearLayout>
 
 
 </LinearLayout>

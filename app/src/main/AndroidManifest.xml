@@ -29,9 +29,8 @@
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
             android:theme="@android:style/Theme.Translucent"
             />
-        <activity android:name=".ConnectScreen"
-            android:noHistory="true"/>
-
+        <activity android:name=".ConnectScreenActivity"
+          />
 
     </application>
 

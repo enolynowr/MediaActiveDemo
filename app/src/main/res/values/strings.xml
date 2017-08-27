@@ -1,9 +1,14 @@
 <resources>
     <string name="app_name">MediaActiveDemo</string>
-    <string name="button_connect">Connect</string>
-    <string name="button_disconnect">Disconnect</string>
-    <string name="banner_ads">ca-app-pub-3940256099942544/6300978111</string>
-    <string name="full_ads">ca-app-pub-4180035077241491/7819265339</string>
-
+    <string name="button_connect">Play</string>
+    <string name="button_disconnect">Stop</string>
     <string name="actionbar_string">Home</string>
+    <string name="main_dialog_title">コンテンツ再生確認</string>
+    <string name="main_dialog_message">コンテンツ再生画面に遷移しますか?</string>
+    <string name="contents_dialog_title">サウンド再生</string>
+    <string name="contents_dialog_message">サウンドを再生しますか?</string>
+    <string name="dialog_negative">CANCEL</string>
+    <string name="dialog_positive">OK</string>
+    <string name="toast_alert">Please Press The Play Button !</string>
+
 </resources>

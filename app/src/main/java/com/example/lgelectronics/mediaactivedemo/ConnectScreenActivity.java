@@ -3,7 +3,6 @@ package com.example.lgelectronics.mediaactivedemo;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.media.MediaPlayer;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -22,20 +21,32 @@ import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
 
-public class ConnectScreen extends AppCompatActivity {
+public class ConnectScreenActivity extends AppCompatActivity {
     //Full ads
     private InterstitialAd mInterstitialAd;
-    //Image　Source
-    int[] res = {R.drawable.android_1, R.drawable.android_2, R.drawable.android_3};
-    //Sound　Source
-    int[] res_sound = {R.raw.ganbare1, R.raw.maidoarigatougozaimasu1, R.raw.sonotyoushisonotyousi1};
+    private Button connect;
+    private Button disconnect;
+    private ImageView iv_dial;
+    private MediaPlayer mediaPlayer;
+    private TelephonyManager telephony;
 
-    Button connect;
-    Button disconnect;
-    ImageView iv_dial;
-    MediaPlayer mediaPlayer;
-    int mPosition;
-    TelephonyManager telephony;
+    private int mPosition;
+    private boolean mediaPauseFlag = false;
+    private int mediaPauseLength = 0;
+
+    //Image　Source
+    private int[] res = {
+            EnumBundle.ResImage.GANBARE.getInt(),
+            EnumBundle.ResImage.MAIDO.getInt(),
+            EnumBundle.ResImage.SONOTYOUSHI.getInt()
+    };
+    //Sound　Source
+    private int[] res_sound = {
+            EnumBundle.ResSound.GANBARE.getInt(),
+            EnumBundle.ResSound.MAIDO.getInt(),
+            EnumBundle.ResSound.SONOTYOUSHI.getInt()
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,7 +54,8 @@ public class ConnectScreen extends AppCompatActivity {
         telephony=(TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
         //Admob Initial and Load
         mInterstitialAd = new InterstitialAd(this);
-        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+
+        mInterstitialAd.setAdUnitId(EnumBundle.AdmobKey.FULL_ADS_KEY.getString());
         mInterstitialAd.loadAd(new AdRequest.Builder().addTestDevice(telephony.getDeviceId()).build());//load
         // button
         connect = (Button) findViewById(R.id.btn_connect);
@@ -55,11 +67,7 @@ public class ConnectScreen extends AppCompatActivity {
         this.mPosition = intent.getExtras().getInt("main", 0);
         //mediaplayer
         mediaPlayer = MediaPlayer.create(getApplicationContext(), res_sound[mPosition]);
-    }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
         //setImage
         setImage(mPosition);
         //setMediaPlayer
@@ -67,8 +75,24 @@ public class ConnectScreen extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+
+        if(mediaPauseFlag){
+            mediaPauseFlag = false;
+            mediaPlayer.seekTo(mediaPauseLength);
+            mediaPlayer.start();
+        }
+    }
+
+    @Override
     protected void onPause() {
         super.onPause();
+        if(mediaPlayer.isPlaying()){
+            mediaPauseFlag = true;
+            mediaPlayer.pause();
+            mediaPauseLength = mediaPlayer.getCurrentPosition();
+        }
     }
 
     @Override//menu
@@ -83,7 +107,7 @@ public class ConnectScreen extends AppCompatActivity {
         // Handle presses on the action bar items
         switch (item.getItemId()) {
             case R.id.action_home:
-                ConnectScreen.this.finish();
+                ConnectScreenActivity.this.finish();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -91,12 +115,12 @@ public class ConnectScreen extends AppCompatActivity {
     }
 
     //Dialog
-    public void showDialLog() {
+    private void showDialLog() {
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder.setTitle("音楽の再生");
-        alertDialogBuilder.setMessage("音楽を再生しますか？");
-        alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+        alertDialogBuilder.setTitle(this.getResources().getString(R.string.contents_dialog_title));
+        alertDialogBuilder.setMessage(this.getResources().getString(R.string.contents_dialog_message));
+        alertDialogBuilder.setPositiveButton(this.getResources().getString(R.string.dialog_positive), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 // mediaPlayer start and looping
                 mediaPlayer.start();
@@ -104,7 +128,7 @@ public class ConnectScreen extends AppCompatActivity {
             }
         });
         // Cancel 버튼 이벤트
-        alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        alertDialogBuilder.setNegativeButton(this.getResources().getString(R.string.dialog_negative), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
             }
@@ -127,6 +151,7 @@ public class ConnectScreen extends AppCompatActivity {
             public void onClick(View v) {
 
                 if (mediaPlayer.isPlaying()) {
+                    Log.d(MainActivity.LOG_TAG, "Show Full Ads.");
                     mediaPlayer.stop();
                     mInterstitialAd.show();
 
@@ -134,15 +159,17 @@ public class ConnectScreen extends AppCompatActivity {
                         @Override
                         public void onAdClosed() {
                             super.onAdClosed();
+                            Log.d(MainActivity.LOG_TAG, "Close Full Ads.");
                             mInterstitialAd.loadAd(new AdRequest.Builder().build());
 
+                            finish();
                             return;
                         }
                     });
 
                 } else {
-                    Toast.makeText(getApplicationContext(), "Please Press The Connect Button !", Toast.LENGTH_LONG).show();
-
+                    Toast.makeText(getApplicationContext(), ConnectScreenActivity.this.getResources().getString(R.string.toast_alert),
+                            Toast.LENGTH_LONG).show();
                     return;
                 }
                 // ConnectScreen.this.finish();
