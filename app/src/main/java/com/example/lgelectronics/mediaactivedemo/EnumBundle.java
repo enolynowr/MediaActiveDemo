@@ -12,7 +12,7 @@ public class EnumBundle {
     public enum AdmobKey{
 
         FULL_ADS_KEY("ca-app-pub-3940256099942544/1033173712"),
-        BANNER_ADS_KEY("ca-app-pub-4180035077241491/4498564479");
+        BANNER_ADS_KEY("ca-app-pub-3940256099942544/6300978111");
 
         private String key;
         AdmobKey(String _key){
