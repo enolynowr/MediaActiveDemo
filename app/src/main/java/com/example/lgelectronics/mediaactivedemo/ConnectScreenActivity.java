@@ -51,10 +51,10 @@ public class ConnectScreenActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_connect_screen);
+        setTitle("Play");
         telephony=(TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
         //Admob Initial and Load
         mInterstitialAd = new InterstitialAd(this);
-
         mInterstitialAd.setAdUnitId(EnumBundle.AdmobKey.FULL_ADS_KEY.getString());
         mInterstitialAd.loadAd(new AdRequest.Builder().addTestDevice(telephony.getDeviceId()).build());//load
         // button
@@ -67,7 +67,6 @@ public class ConnectScreenActivity extends AppCompatActivity {
         this.mPosition = intent.getExtras().getInt("main", 0);
         //mediaplayer
         mediaPlayer = MediaPlayer.create(getApplicationContext(), res_sound[mPosition]);
-
         //setImage
         setImage(mPosition);
         //setMediaPlayer
@@ -77,7 +76,6 @@ public class ConnectScreenActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
         if(mediaPauseFlag){
             mediaPauseFlag = false;
             mediaPlayer.seekTo(mediaPauseLength);
@@ -95,7 +93,7 @@ public class ConnectScreenActivity extends AppCompatActivity {
         }
     }
 
-    @Override//menu
+    @Override//menu Default
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.actionbar_menu, menu);
@@ -120,6 +118,7 @@ public class ConnectScreenActivity extends AppCompatActivity {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setTitle(this.getResources().getString(R.string.contents_dialog_title));
         alertDialogBuilder.setMessage(this.getResources().getString(R.string.contents_dialog_message));
+        //Positive Button
         alertDialogBuilder.setPositiveButton(this.getResources().getString(R.string.dialog_positive), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 // mediaPlayer start and looping
@@ -127,7 +126,7 @@ public class ConnectScreenActivity extends AppCompatActivity {
                 mediaPlayer.setLooping(true);
             }
         });
-        // Cancel 버튼 이벤트
+        //Negative Button
         alertDialogBuilder.setNegativeButton(this.getResources().getString(R.string.dialog_negative), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
@@ -135,16 +134,16 @@ public class ConnectScreenActivity extends AppCompatActivity {
         });
         alertDialogBuilder.show();
     }
-
+    //MediaPlayer
     public void setMediaPlayer() {
-        //音楽再生
+        //音楽再生 Dialog
         connect.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showDialLog();
             }
         });
-        //Listviewに戻る
+        //音楽中止 And Show Full Ads
         disconnect.setOnClickListener(new Button.OnClickListener() {
 
             @Override
@@ -154,19 +153,18 @@ public class ConnectScreenActivity extends AppCompatActivity {
                     Log.d(MainActivity.LOG_TAG, "Show Full Ads.");
                     mediaPlayer.stop();
                     mInterstitialAd.show();
-
+                    //Ads Listener
                     mInterstitialAd.setAdListener(new AdListener() {
                         @Override
                         public void onAdClosed() {
                             super.onAdClosed();
                             Log.d(MainActivity.LOG_TAG, "Close Full Ads.");
                             mInterstitialAd.loadAd(new AdRequest.Builder().build());
-
                             finish();
+
                             return;
                         }
                     });
-
                 } else {
                     Toast.makeText(getApplicationContext(), ConnectScreenActivity.this.getResources().getString(R.string.toast_alert),
                             Toast.LENGTH_LONG).show();
@@ -177,7 +175,7 @@ public class ConnectScreenActivity extends AppCompatActivity {
         });
 
     }
-
+    // Set Image
     public void setImage(int _mPosition) {
         iv_dial.setImageResource(res[_mPosition]);
     }
