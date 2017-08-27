@@ -76,6 +76,7 @@ public class ConnectScreenActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        //Media Player ReStart
         if(mediaPauseFlag){
             mediaPauseFlag = false;
             mediaPlayer.seekTo(mediaPauseLength);
@@ -86,6 +87,7 @@ public class ConnectScreenActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        //Save CurrentPosition Of Media Player
         if(mediaPlayer.isPlaying()){
             mediaPauseFlag = true;
             mediaPlayer.pause();
