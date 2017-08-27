@@ -10,5 +10,6 @@
     <string name="dialog_negative">CANCEL</string>
     <string name="dialog_positive">OK</string>
     <string name="toast_alert">Please Press The Play Button !</string>
-
+    <string name="permission_denied">Permission Denied</string>
+    <string name="permission_denied_message">このアプリは権限を許可しないと、ご利用になれません。アプリを修正します。</string>
 </resources>
